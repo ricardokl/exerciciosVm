@@ -21,20 +21,30 @@ x.append(vm*(t[1]-t[0]) + x[0])
 # Objeto do movimento pode ser ônibus ou carro de passeio
 obj = random.choice(['ônibus', 'carro de passeio'])
 
+# Transformando tudo em strings
 x_string = [str(a).replace('.',',') for a in x]
 t_string = [str(datetime.timedelta(hours=a))[:-3] for a in t]
 deltax = str(x[1]-x[0]).replace('.',',')
 deltat = str(datetime.timedelta(hours=t[1]-t[0]))[:-3]
 
-ex = [x.read_text().\
-      replace('{obj}',obj).\
-      replace('{deltax}', deltax).\
-      replace('{deltat}', deltat).\
-      replace('{x0}', x_string[0]).\
-      replace('{x1}', x_string[1]).\
-      replace('{t1}', t_string[0]).\
-      replace('{t0}', t_string[1]) \
-      for x in Path(__file__).parent.joinpath("templates").iterdir()]
+# Dicionário de substituições
+subs = {'{obj}':obj, \
+        '{deltax}': deltax, \
+        '{deltat}': deltat, \
+        '{x0}': x_string[0], \
+        '{x1}': x_string[1], \
+        '{t1}': t_string[0], \
+        '{t0}': t_string[1]}
 
-# Output uma escolha aleatória entre os exercícios
-print(random.choice(ex))
+# Lista com todos os caminhos dos arquivos da pasta /template
+templates = [x for x in Path(__file__).parent.joinpath("templates").iterdir()]
+
+# Escolhendo um arquivo aleatório e lendo o texto dele
+escolha = random.choice(templates).read_text()
+
+# Loop substituindo todos as variáveis no texto
+for pair in subs.items():
+    escolha = escolha.replace(pair[0],pair[1])
+
+# Print do resultado final
+print(escolha)
