@@ -44,7 +44,8 @@ def exercicio():
     # Loop substituindo todos as variáveis no texto
     for i in subs.items():
         escolha = escolha.replace(i[0],i[1])
-    print(escolha)
+    return escolha
 
 # Chamando a função final
-exercicio()
+if __name__ ==  '__main__':
+    print(exercicio())
