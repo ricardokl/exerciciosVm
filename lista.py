@@ -29,9 +29,9 @@ cabecalho = """
 \\def\\UERJ{\\textbf{Universidade do Estado do Rio de Janeiro}}
 \\def\\cap{\\textbf{CAp/UERJ \\- Instituto de Aplicação Fernando Rodrigues da Silveira}}
 \\def\\logo{\\includegraphics[width = 2.7cm]{/home/ricardo/Documents/cap/logouerj.png}}
-\\def\\profs{Elizandra Martins Silva, Maria Beatriz Dias da Silva Maia Porto, Ricardo Kullock}
+\\def\\profs{PROFESSORES}
 \\def\\ano{9º ano -- E.F.}
-\\def\\titulo{\\textbf{Gabarito da Lista de Exercícios de Fixação}}
+\\def\\titulo{\\textbf{Lista de Exercícios de Fixação}}
 
 \\begin{center}
 \\resizebox{\\linewidth}{!}{
