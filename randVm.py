@@ -2,7 +2,7 @@ import random
 import datetime
 from pathlib import Path
 
-def rand(vmax: int = 100, xmax: int = 50000) -> list[float]:
+def rand(vmax: int = 100, xmax: int = 50000) -> tuple:
     """
     Função retorna as variáveis aleatórias necessárias
     """
@@ -21,12 +21,12 @@ def rand(vmax: int = 100, xmax: int = 50000) -> list[float]:
     return vm, t, x
 
 
-def str_vars(vmax: int, xmax: int) -> list[str]:
+def str_vars() -> list[str]:
     """
     Transformando tudo em strings para usar nos temaplates
     """
     # Chamando a função principal
-    vm, t, x = rand(vmax, xmax)
+    _, t, x = rand()
     x_string = [str(a).replace('.',',') for a in x]
     t_string = [str(datetime.timedelta(hours=a))[:-3] for a in t]
     deltax = [str(x[1]-x[0]).replace('.',',')]
