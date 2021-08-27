@@ -32,7 +32,7 @@ def str_vars() -> list[str]:
     deltax = [str(x[1]-x[0]).replace('.',',')]
     deltat = [str(datetime.timedelta(hours=t[1]-t[0]))[:-3]]
     # Objeto do movimento pode ser ônibus ou carro de passeio
-    obj = [random.choice(['ônibus', 'carro de passeio', "caminhão"])]
+    obj = [random.choice(['ônibus', 'carro de passeio', 'caminhão'])]
     # Objeto de retorno é uma concatenação de listas
     return obj + x_string + t_string + deltax + deltat
 
