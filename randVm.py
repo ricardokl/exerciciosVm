@@ -1,143 +1,119 @@
 import random
 import datetime
-Transportes = ["andando", "carro", "ônibus", "bicicleta", "motocicleta", "skate"]
+Transportes = ["carro", "a pé", "ônibus", "bicicleta", "motocicleta", "skate"]
 Transporte_escolhido = random.choice(Transportes)
 if Transporte_escolhido == "carro":
-    Vm = random.randint(12, 28)
-    mi = random.randint(0, 59)
-    md = random.randint(0, 59)
-    hi = random.randint(8, 16)
-    hd = random.randint(0, 6)
-    if hd == 0:
-        md = random.randint(1, 59)
-    diffinsec = ((hd*3600)+(md*60))
+    Vm = random.randint(12, 23)
+    ti = (random.randint(40, 64))*15
+    td = random.randint(0, 24)*15
+    diffinsec = (td*60)
     d = (Vm*diffinsec)/1000
-    now = datetime.datetime(2000, 1, 1, hi, mi)
-    tdiff = datetime.timedelta(hours=hd, minutes=md)
-    then = str(now + tdiff)
+    now = datetime.timedelta(minutes=ti)
+    tdiff = datetime.timedelta(minutes=td)
+    then = str(datetime.timedelta(minutes=ti + td))
     now = str(now)
     tdiff = str(tdiff)
-    print("Uma pessoa que saiu de casa com seu {} às {} horas chegou ao seu destino às {}. Sabendo que a distância percorrida por essa pessoa foi de {}Km, qual a velocidade média, em metros por segundo, da pessoa no trajeto?".format(Transporte_escolhido, now[11:16], then[11:16], d))
+    print(f"Uma pessoa que saiu de casa com seu {Transporte_escolhido} às {now[0:5]} horas chegou ao seu destino às {then[0:5]}. Sabendo que a distância percorrida por essa pessoa foi de {d}Km, qual a velocidade média, em metros por segundo, da pessoa no trajeto?")
     R = input(print("Qual é a sua resposta? "))
     Vm = str(Vm)
     Vm = Vm + "m/s"
     if Vm == R:
         print("Boa! Você acertou!!!")
     else:
-        print("A resposta correta era {}. Tente novamente!".format(Vm))
+        print(f"A resposta correta era {Vm}. Tente novamente!")
 
-if Transporte_escolhido == "andando":
-    Vm = random.randint(1, 3)
-    mi = random.randint(0, 59)
-    md = random.randint(0, 59)
-    hi = random.randint(8, 16)
-    hd = random.randint(0, 2)
-    if hd == 0:
-        md = random.randint(1, 59)
-    diffinsec = ((hd*3600)+(md*60))
+if Transporte_escolhido == "a pé":
+    Vm = random.randint(1, 2)
+    ti = (random.randint(40, 64))*15
+    td = random.randint(0, 10)*15
+    diffinsec = (td*60)
     d = (Vm*diffinsec)/1000
-    now = datetime.datetime(2000, 1, 1, hi, mi)
-    tdiff = datetime.timedelta(hours=hd, minutes=md)
-    then = str(now + tdiff)
+    now = datetime.timedelta(minutes=ti)
+    tdiff = datetime.timedelta(minutes=td)
+    then = str(datetime.timedelta(minutes=ti + td))
     now = str(now)
     tdiff = str(tdiff)
-    print("Uma pessoa que saiu de casa {} às {} horas chegou ao seu destino às {}. Sabendo que a distância percorrida por essa pessoa foi de {}Km, qual a velocidade média, em metros por segundo, da pessoa no trajeto?".format(Transporte_escolhido, now[11:16], then[11:16], d))
+    print(f"Uma pessoa que saiu de casa {Transporte_escolhido} às {now[0:5]} horas chegou ao seu destino às {then[0:5]}. Sabendo que a distância percorrida por essa pessoa foi de {d}Km, qual a velocidade média, em metros por segundo, da pessoa no trajeto?")
     R = input(print("Qual é a sua resposta? "))
     Vm = str(Vm)
     Vm = Vm + "m/s"
     if Vm == R:
         print("Boa! Você acertou!!!")
     else:
-        print("A resposta correta era {}. Tente novamente!".format(Vm))
+        print(f"A resposta correta era {Vm}. Tente novamente!")
 if Transporte_escolhido == "ônibus":
-    Vm = random.randint(12, 22)
-    mi = random.randint(0, 59)
-    md = random.randint(0, 59)
-    hi = random.randint(8, 16)
-    hd = random.randint(0, 6)
-    if hd == 0:
-        md = random.randint(1, 59)
-    diffinsec = ((hd*3600)+(md*60))
+    Vm = random.randint(12, 23)
+    ti = (random.randint(40, 64))*15
+    td = random.randint(0, 28)*15
+    diffinsec = (td*60)
     d = (Vm*diffinsec)/1000
-    now = datetime.datetime(2000, 1, 1, hi, mi)
-    tdiff = datetime.timedelta(hours=hd, minutes=md)
-    then = str(now + tdiff)
+    now = datetime.timedelta(minutes=ti)
+    tdiff = datetime.timedelta(minutes=td)
+    then = str(datetime.timedelta(minutes=ti + td))
     now = str(now)
     tdiff = str(tdiff)
-    print("Uma pessoa que acabou de sair de uma estação de {} às {} horas chegou ao seu destino às {}. Sabendo que a distância percorrida por essa pessoa foi de {}Km, qual a velocidade média, em metros por segundo, da pessoa no trajeto?".format(Transporte_escolhido, now[11:16], then[11:16], d))
+    print(f"Uma pessoa que acabou de sair de uma estação de {Transporte_escolhido} às {now[0:5]} horas chegou ao seu destino às {then[0:5]}. Sabendo que a distância percorrida por essa pessoa foi de {d}Km, qual a velocidade média, em metros por segundo, da pessoa no trajeto?")
     R = input(print("Qual é a sua resposta? "))
     Vm = str(Vm)
     Vm = Vm + "m/s"
     if Vm == R:
         print("Boa! Você acertou!!!")
     else:
-        print("A resposta correta era {}. Tente novamente!".format(Vm))
+        print(f"A resposta correta era {Vm}. Tente novamente!")
 if Transporte_escolhido == "bicicleta":
     Vm = random.randint(2, 6)
-    mi = random.randint(0, 59)
-    md = random.randint(0, 59)
-    hi = random.randint(8, 16)
-    hd = random.randint(0, 2)
-    if hd == 0:
-        md = random.randint(1, 59)
-    diffinsec = ((hd*3600)+(md*60))
+    ti = (random.randint(40, 64))*15
+    td = random.randint(0, 12)*15
+    diffinsec = (td*60)
     d = (Vm*diffinsec)/1000
-    now = datetime.datetime(2000, 1, 1, hi, mi)
-    tdiff = datetime.timedelta(hours=hd, minutes=md)
-    then = str(now + tdiff)
+    now = datetime.timedelta(minutes=ti)
+    tdiff = datetime.timedelta(minutes=td)
+    then = str(datetime.timedelta(minutes=ti + td))
     now = str(now)
     tdiff = str(tdiff)
-    print("Uma pessoa que saiu de casa com sua {} às {} horas chegou ao seu destino às {}. Sabendo que a distância percorrida por essa pessoa foi de {}Km, qual a velocidade média, em metros por segundo, da pessoa no trajeto?".format(Transporte_escolhido, now[11:16], then[11:16], d))
+    print(f"Uma pessoa que saiu de casa com sua {Transporte_escolhido} às {now[0:5]} horas chegou ao seu destino às {then[0:5]}. Sabendo que a distância percorrida por essa pessoa foi de {d}Km, qual a velocidade média, em metros por segundo, da pessoa no trajeto?")
     R = input(print("Qual é a sua resposta? "))
     Vm = str(Vm)
     Vm = Vm + "m/s"
     if Vm == R:
         print("Boa! Você acertou!!!")
     else:
-        print("A resposta correta era {}. Tente novamente!".format(Vm))
+        print(f"A resposta correta era {Vm}. Tente novamente!")
 if Transporte_escolhido == "motocicleta":
-    Vm = random.randint(10, 30)
-    mi = random.randint(0, 59)
-    md = random.randint(0, 59)
-    hi = random.randint(8, 16)
-    hd = random.randint(0, 4)
-    if hd == 0:
-        md = random.randint(1, 59)
-    diffinsec = ((hd*3600)+(md*60))
+    Vm = random.randint(11, 30)
+    ti = (random.randint(40, 64))*15
+    td = random.randint(0, 20)*15
+    diffinsec = (td*60)
     d = (Vm*diffinsec)/1000
-    now = datetime.datetime(2000, 1, 1, hi, mi)
-    tdiff = datetime.timedelta(hours=hd, minutes=md)
-    then = str(now + tdiff)
+    now = datetime.timedelta(minutes=ti)
+    tdiff = datetime.timedelta(minutes=td)
+    then = str(datetime.timedelta(minutes=ti + td))
     now = str(now)
     tdiff = str(tdiff)
-    print("Uma pessoa que saiu de casa com sua {} às {} horas chegou ao seu destino às {}. Sabendo que a distância percorrida por essa pessoa foi de {}Km, qual a velocidade média, em metros por segundo, da pessoa no trajeto?".format(Transporte_escolhido, now[11:16], then[11:16], d))
+    print(f"Uma pessoa que saiu de casa com sua {Transporte_escolhido} às {now[0:5]} horas chegou ao seu destino às {then[0:5]}. Sabendo que a distância percorrida por essa pessoa foi de {d}Km, qual a velocidade média, em metros por segundo, da pessoa no trajeto?")
     R = input(print("Qual é a sua resposta? "))
     Vm = str(Vm)
     Vm = Vm + "m/s"
     if Vm == R:
         print("Boa! Você acertou!!!")
     else:
-        print("A resposta correta era {}. Tente novamente!".format(Vm))
+        print(f"A resposta correta era {Vm}. Tente novamente!")
 if Transporte_escolhido == "skate":
     Vm = random.randint(1, 4)
-    mi = random.randint(0, 59)
-    md = random.randint(0, 59)
-    hi = random.randint(8, 16)
-    hd = random.randint(0, 2)
-    if hd == 0:
-        md = random.randint(1, 59)
-    diffinsec = ((hd*3600)+(md*60))
+    ti = (random.randint(40, 64))*15
+    td = random.randint(0, 8)*15
+    diffinsec = (td*60)
     d = (Vm*diffinsec)/1000
-    now = datetime.datetime(2000, 1, 1, hi, mi)
-    tdiff = datetime.timedelta(hours=hd, minutes=md)
-    then = str(now + tdiff)
+    now = datetime.timedelta(minutes=ti)
+    tdiff = datetime.timedelta(minutes=td)
+    then = str(datetime.timedelta(minutes=ti + td))
     now = str(now)
     tdiff = str(tdiff)
-    print("Uma pessoa que saiu de casa com seu {} às {} horas chegou ao seu destino às {}. Sabendo que a distância percorrida por essa pessoa foi de {}Km, qual a velocidade média, em metros por segundo, da pessoa no trajeto?".format(Transporte_escolhido, now[11:16], then[11:16], d))
+    print(f"Uma pessoa que saiu de casa com seu {Transporte_escolhido} às {now[0:5]} horas chegou ao seu destino às {then[0:5]}. Sabendo que a distância percorrida por essa pessoa foi de {d}Km, qual a velocidade média, em metros por segundo, da pessoa no trajeto?")
     R = input(print("Qual é a sua resposta? "))
     Vm = str(Vm)
     Vm = Vm + "m/s"
     if Vm == R:
         print("Boa! Você acertou!!!")
     else:
-        print("A resposta correta era {}. Tente novamente!".format(Vm))
+        print(f"A resposta correta era {Vm}. Tente novamente!")
