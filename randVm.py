@@ -1,10 +1,22 @@
 import random
 import datetime
+
 Transportes = ["carro", "a pé", "ônibus", "bicicleta", "motocicleta", "skate"]
 Transporte_escolhido = random.choice(Transportes)
+
+def randvm(vmin,vmax,timin,timax):
+    '''
+    Docstring da função
+    Como usar a função
+    '''
+    # Oq estou fazendo abaixo
+    Vm = random.randint(vmin,vmax)
+    # Gerando o tempo inicial randomicamente, de 15 em 15 min
+    ti = (random.randint(timin, timax))*15
+    return Vm, ti
+
 if Transporte_escolhido == "carro":
-    Vm = random.randint(12, 23)
-    ti = (random.randint(40, 64))*15
+    Vm, ti = randvm(12,23,40,64)
     td = random.randint(0, 24)*15
     diffinsec = (td*60)
     d = (Vm*diffinsec)/1000
@@ -23,8 +35,7 @@ if Transporte_escolhido == "carro":
         print(f"A resposta correta era {Vm}. Tente novamente!")
 
 if Transporte_escolhido == "a pé":
-    Vm = random.randint(1, 2)
-    ti = (random.randint(40, 64))*15
+    Vm, ti = randvm(1,2,40,64)
     td = random.randint(0, 10)*15
     diffinsec = (td*60)
     d = (Vm*diffinsec)/1000
@@ -41,6 +52,7 @@ if Transporte_escolhido == "a pé":
         print("Boa! Você acertou!!!")
     else:
         print(f"A resposta correta era {Vm}. Tente novamente!")
+
 if Transporte_escolhido == "ônibus":
     Vm = random.randint(12, 23)
     ti = (random.randint(40, 64))*15
@@ -60,6 +72,7 @@ if Transporte_escolhido == "ônibus":
         print("Boa! Você acertou!!!")
     else:
         print(f"A resposta correta era {Vm}. Tente novamente!")
+
 if Transporte_escolhido == "bicicleta":
     Vm = random.randint(2, 6)
     ti = (random.randint(40, 64))*15
@@ -79,6 +92,7 @@ if Transporte_escolhido == "bicicleta":
         print("Boa! Você acertou!!!")
     else:
         print(f"A resposta correta era {Vm}. Tente novamente!")
+
 if Transporte_escolhido == "motocicleta":
     Vm = random.randint(11, 30)
     ti = (random.randint(40, 64))*15
@@ -98,6 +112,7 @@ if Transporte_escolhido == "motocicleta":
         print("Boa! Você acertou!!!")
     else:
         print(f"A resposta correta era {Vm}. Tente novamente!")
+
 if Transporte_escolhido == "skate":
     Vm = random.randint(1, 4)
     ti = (random.randint(40, 64))*15
