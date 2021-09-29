@@ -39,9 +39,8 @@ if Transporte_escolhido == "skate":
           f" Sabendo que a distância percorrida por essa pessoa foi de {d}Km, qual a velocidade média, em metros por segundo, da pessoa no trajeto?")
 
 R = input(print("Qual é a sua resposta? "))
-Vm = str(Vm)
-Vm = Vm + "m/s"
-if Vm == R:
+strVm = str(Vm) + "m/s"
+if strVm == R:
     print("Boa! Você acertou!!!")
 else:
-    print(f"A resposta correta era {Vm}. Tente novamente!")
+    print(f"A resposta correta era {strVm}. Tente novamente!")
