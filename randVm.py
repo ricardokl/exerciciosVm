@@ -17,23 +17,23 @@ if Transporte_escolhido == "carro":
     Vm, d, start, end = info(12, 23, 1, 24)
     print(f"Uma pessoa que saiu de casa com seu {Transporte_escolhido} às {start[0:5]} horas chegou ao seu destino às {end[0:5]}."
           f" Sabendo que a distância percorrida por essa pessoa foi de {d}Km, qual a velocidade média, em metros por segundo, da pessoa no trajeto?")
-if Transporte_escolhido == "a pé":
+elif Transporte_escolhido == "a pé":
     Vm, d, start, end = info(1, 2, 1, 10)
     print(f"Uma pessoa que saiu de casa {Transporte_escolhido} às {start[0:5]} horas chegou ao seu destino às {end[0:5]}."
           f" Sabendo que a distância percorrida por essa pessoa foi de {d}Km, qual a velocidade média, em metros por segundo, da pessoa no trajeto?")
-if Transporte_escolhido == "ônibus":
+elif Transporte_escolhido == "ônibus":
     Vm, d, start, end = info(12, 23, 1, 28)
     print(f"Uma pessoa que acabou de sair de uma estação de {Transporte_escolhido} às {start[0:5]} horas chegou ao seu destino às {end[0:5]}."
           f" Sabendo que a distância percorrida por essa pessoa foi de {d}Km, qual a velocidade média, em metros por segundo, da pessoa no trajeto?")
-if Transporte_escolhido == "bicicleta":
+elif Transporte_escolhido == "bicicleta":
     Vm, d, start, end = info(2, 6, 1, 12)
     print(f"Uma pessoa que saiu de casa com sua {Transporte_escolhido} às {start[0:5]} horas chegou ao seu destino às {end[0:5]}."
           f" Sabendo que a distância percorrida por essa pessoa foi de {d}Km, qual a velocidade média, em metros por segundo, da pessoa no trajeto?")
-if Transporte_escolhido == "motocicleta":
+elif Transporte_escolhido == "motocicleta":
     Vm, d, start, end = info(11, 30, 1, 20)
     print(f"Uma pessoa que saiu de casa com sua {Transporte_escolhido} às {start[0:5]} horas chegou ao seu destino às {end[0:5]}."
           f" Sabendo que a distância percorrida por essa pessoa foi de {d}Km, qual a velocidade média, em metros por segundo, da pessoa no trajeto?")
-if Transporte_escolhido == "skate":
+elif Transporte_escolhido == "skate":
     Vm, d, start, end = info(1, 4, 1, 8)
     print(f"Uma pessoa que saiu de casa com seu {Transporte_escolhido} às {start[0:5]} horas chegou ao seu destino às {end[0:5]}."
           f" Sabendo que a distância percorrida por essa pessoa foi de {d}Km, qual a velocidade média, em metros por segundo, da pessoa no trajeto?")
