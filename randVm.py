@@ -56,4 +56,3 @@ def exercicio() -> str:
 
 if __name__ ==  '__main__':
     print(exercicio())
-    print(__file__)

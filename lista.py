@@ -60,6 +60,6 @@ with open('lista.tex','w') as f:
     f.write('\\begin(itemize)\n')
     for i in range(k):
         f.write('\\item ')
-        f.write(str(vm.exercicio()))
+        f.write(vm.exercicio())
     f.write('\\end(itemize)\n')
     f.write(footer)
