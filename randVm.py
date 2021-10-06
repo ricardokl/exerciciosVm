@@ -28,6 +28,7 @@ def str_vars() -> list[str]:
     # Chamando a função principal
     _, t, x = rand()
     x_string = [str(a).replace('.',',') for a in x]
+    # [:-3] retira os segundos da string
     t_string = [str(datetime.timedelta(hours=a))[:-3] for a in t]
     deltax = [str(x[1]-x[0]).replace('.',',')]
     deltat = [str(datetime.timedelta(hours=t[1]-t[0]))[:-3]]
@@ -55,3 +56,4 @@ def exercicio() -> str:
 
 if __name__ ==  '__main__':
     print(exercicio())
+    print(__file__)
