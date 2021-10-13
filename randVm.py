@@ -2,7 +2,7 @@ import random
 import datetime
 from pathlib import Path
 
-def rand(vmax = 100, xmax 50000):
+def rand(vmax = 100, xmax  = 50000):
     """
     Função retorna as variáveis aleatórias necessárias
     """
