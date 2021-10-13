@@ -2,7 +2,7 @@ import random
 import datetime
 from pathlib import Path
 
-def rand(vmax: int = 100, xmax: int = 50000) -> tuple:
+def rand(vmax = 100, xmax 50000):
     """
     Função retorna as variáveis aleatórias necessárias
     """
@@ -20,7 +20,7 @@ def rand(vmax: int = 100, xmax: int = 50000) -> tuple:
     # return vm, th, tm, t, x
     return vm, t, x
 
-def str_vars() -> list[str]:
+def str_vars():
     """
     Transformando tudo em strings para usar nos temaplates
     """
@@ -36,7 +36,7 @@ def str_vars() -> list[str]:
     # Objeto de retorno é uma concatenação de listas
     return obj + x_string + t_string + deltax + deltat
 
-def exercicio() -> str:
+def exercicio():
     """
     Função geradora de exercícios aleatórios usando templates em ./templates
     """
