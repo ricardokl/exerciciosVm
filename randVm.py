@@ -20,7 +20,6 @@ def rand(vmax: int = 100, xmax: int = 50000) -> tuple:
     # return vm, th, tm, t, x
     return vm, t, x
 
-
 def str_vars() -> list[str]:
     """
     Transformando tudo em strings para usar nos temaplates
