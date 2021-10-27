@@ -13,7 +13,7 @@ def mru(vmax: int = 100, xmax: int = 500) -> tuple:
     # Inicializando as listas de tempo e posição
     t, x = list(), list()
     # Primeiro valor do tempo gerado randomicamente
-    t.append(random.randint(0,72)/4)
+    t.append(random.randint(0,18*4)/4)
     # Segundo valor do tempo dado pelo primeiro mais o intervalo
     t.append(t[0]+dt)
     # Posição inicial aleatória
