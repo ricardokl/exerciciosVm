@@ -8,8 +8,8 @@ def variaveis(vmin = 20 , vmax = 100):
     vm= rd.randint(vmin, vmax)
     tempo = rd.randint(0,55)
     d = vm*tempo
-    hinicial = str(datetime.timedelta())
-    hfinal = str(datetime.timedelta())
+    hinicial = (datetime.timedelta())
+    hfinal = (datetime.timedelta())
     return vm, d, hinicial, hfinal
 
 
