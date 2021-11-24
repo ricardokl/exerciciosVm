@@ -2,14 +2,14 @@ import random
 import datetime
 from pathlib import Path
 
-def mru(vmax: int = 100, xmax: int = 500) -> tuple:
+def mru(vmax: int = 100, xmax: int = 500, dtmax: int = 6) -> tuple:
     """
     Função retorna as variáveis aleatórias necessárias
     """
     # Velocidade aleatória
     v = random.randint(-vmax, vmax)
     # Gerando o intervalo de tempo do movimento
-    dt = random.randint(0,24)/4
+    dt = random.randint(1,dtmax*4)/4
     # Inicializando as listas de tempo e posição
     t, x = list(), list()
     # Primeiro valor do tempo gerado randomicamente
