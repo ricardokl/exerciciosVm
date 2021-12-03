@@ -2,6 +2,8 @@ import random
 import datetime
 from pathlib import Path
 
+multi = 4
+
 def mru(vmax: int = 100, xmax: int = 500, dtmax: int = 6) -> tuple:
     """
     Função retorna as variáveis aleatórias necessárias
