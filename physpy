@@ -6,5 +6,5 @@ DIR="/home/ricardo/Documents/projetos/exerciciosVm"
 cd ${DIR}
 pipenv run tmux new-session -d -s ${SESSION}
 tmux rename-window -t 0 ${SESSION}
-tmux send -t ${SESSION} 'nvim' ENTER
+tmux send -t ${SESSION} 'nvim -c "COQn"' ENTER
 tmux attach-session -t ${SESSION}
