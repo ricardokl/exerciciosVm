@@ -14,9 +14,11 @@ def lista_simples(x = nr_exercicios):
     for _ in range(x):
         ex = vm.mru()
         ex.rand()
-        ex.subs()
-        lista.append(ex.texto)
-    # TODO: Escrever os exercicios em um arquivo.... ou retornar num print?
+        texto = ex.subs()
+        lista.append(texto)
+    print( "==========Lista==========" )
+    for e in lista:
+        print(e)
 
 def complet_rand(x = nr_listas, y = nr_exercicios):
     """
@@ -26,7 +28,6 @@ def complet_rand(x = nr_listas, y = nr_exercicios):
     """
     for _ in range(x):
         lista_simples(y)
-        # TODO: Escrever a lista
 
 def rand_valores(x = nr_exercicios, y = nr_versoes):
     """
@@ -42,6 +43,6 @@ def rand_valores(x = nr_exercicios, y = nr_versoes):
         for x in lista:
             x.rand()
             res.append(x.subs())
-        # TODO: Escrever a lista
-
-print('teste')
+        print( "==========Lista==========" )
+        for e in res:
+            print(e)

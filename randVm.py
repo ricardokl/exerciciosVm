@@ -1,13 +1,13 @@
 import random
 import datetime
 from pathlib import Path
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 
 # path = Path(__file__)
 
-@dataclass(slots=True)
+# @dataclass(slots=True)
 class mru:
-    def __init__(self, vmax: int = 100, xmax: int = 500, dtmax: int = 6) -> None:
+    def __init__(self, vmax: int = 100, xmax: int = 500, dtmax: int = 6):
         """
         Inicialisa um exercício, gerando um texto e os valores a serem
         substituidos
