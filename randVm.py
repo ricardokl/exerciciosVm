@@ -3,11 +3,11 @@ import datetime
 from pathlib import Path
 from dataclasses import dataclass, field
 
-path = Path(__file__)
+# path = Path(__file__)
 
 @dataclass(slots=True)
 class mru:
-    def __init__(self, vmax: int = 100, xmax: int = 500, dtmax: int = 6):
+    def __init__(self, vmax: int = 100, xmax: int = 500, dtmax: int = 6) -> None:
         """
         Inicialisa um exercício, gerando um texto e os valores a serem
         substituidos
@@ -30,7 +30,7 @@ class mru:
         self.x.append(self.v*self.dt + self.x[0])
         self.dx = self.x[1]-self.x[0]
 
-    def renovar(self, vmax: int = 100, xmax: int = 500, dtmax: int = 6):
+    def rand(self, vmax: int = 100, xmax: int = 500, dtmax: int = 6) -> None:
         """
         Gera novas variáveis randomizadas
         """
@@ -49,7 +49,7 @@ class mru:
         self.x.append(self.v*self.dt + self.x[0])
         self.dx = self.x[1]-self.x[0]
 
-    def rand(self):
+    def subs(self) -> str:
         """
         Transforma as variáveis em strings e substitui no texto gerado
         """
@@ -75,11 +75,3 @@ class mru:
         for i in subs.items():
             texto_final = texto_final.replace(i[0],i[1])
         return texto_final
-
-# ex = mru()
-# ex.renovar()
-# ex.rand()
-# print(ex.texto)
-# ex.renovar()
-# ex.rand()
-# print(ex.texto)
