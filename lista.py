@@ -1,65 +1,50 @@
 import randVm as vm
 
-k = 4
+nr_versoes = 2
+nr_exercicios = 4
+nr_listas = 10
 
-header = """\\documentclass[12pt,a4paper,titlepage]{article}
-\\usepackage[brazil]{babel}
-\\usepackage[utf8x]{inputenc}
 
-\\RequirePackage{geometry}
-\\geometry{lmargin=1.5cm,rmargin=1.5cm,top=0.5cm,bottom=0.5cm}
+def complet_rand(x = nr_listas, y = nr_exercicios):
+    """
+    Gera um número de listas completamente randomicamente
+    Cada lista terá um conjunto diferente de exercícios, cada um com
+    valores randomizados
+    """
+    for _ in range(x):
+        lista = list()
+        for _ in range(y):
+            ex = vm.mru()
+            ex.rand()
+            lista.append(ex.texto)
+        # TODO: Escrever a lista
 
-\\newcommand\\myVSpace[1][6pt]{\\rule[\\normalbaselineskip]{0pt}{#1}}
+def lista_simples(x = nr_exercicios):
+    """
+    Gera uma lista para ser utilizada várias vezes
+    Os valores são gerados randomicamente mas o resultado é apenas uma lista
+    """
+    lista = list()
+    for _ in range(x):
+        ex = vm.mru()
+        ex.rand()
+        lista.append(ex.texto)
+    # TODO: Escrever os exercicios em um arquivo.... ou retornar num print?
 
-\\usepackage{color}
-\\definecolor{rltred}{rgb}{0.75,0,0}
-\\definecolor{rltgreen}{rgb}{0,0.5,0}
-\\definecolor{rltblue}{rgb}{0,0,0.75}
-\\definecolor{rltnova}{rgb}{0.30,0.60,0.20}
+def rand_valores(x = nr_exercicios, y = nr_versoes):
+    """
+    Escolhe exercicios randomicamente mas gera apenas 1 modelo
+    O modelo então é usado para gerar várias versões com valores diferentes
+    """
+    lista = list()
+    for _ in range(x):
+        ex = vm.mru()
+        lista.append(ex)
+    for _ in range(y):
+        res = list()
+        for x in lista:
+            x.renovar()
+            res.append(x.rand())
+        # TODO: Escrever a lista
 
-\\usepackage{graphicx}
-\\usepackage{setspace}
-\\usepackage{multirow}
-
-\\selectlanguage{brazil}
-
-\\begin{document}"""
-
-cabecalho = """
-\\def\\UERJ{\\textbf{Universidade do Estado do Rio de Janeiro}}
-\\def\\cap{\\textbf{CAp/UERJ \\- Instituto de Aplicação Fernando Rodrigues da Silveira}}
-\\def\\logo{\\includegraphics[width = 2.7cm]{/home/ricardo/Documents/cap/logouerj.png}}
-\\def\\profs{PROFESSORES}
-\\def\\ano{9º ano -- E.F.}
-\\def\\titulo{\\textbf{Lista de Exercícios de Fixação}}
-
-\\begin{center}
-\\resizebox{\\linewidth}{!}{
-\\begin{tabular}{|llc|}
-\\hline
-{\\myVSpace}
-\\multirow{6}{*}{\\logo}	& \\multicolumn{2}{c|}{\\UERJ}\\\\
-			& \\multicolumn{2}{c|}{\\cap}\\\\
-[7pt]
-			& \\textbf{Disciplina:} Física / \\ano		& \\textbf{Professores:} {\profs}\\\\
-			& 						&\\\\
-                & \\multicolumn{2}{c|}{\\titulo}\\\\
-[7pt]
-\\hline
-\\end{tabular}}
-\\end{center}
-"""
-
-footer = """
-\\end{document}
-"""
-
-with open('lista.tex','w') as f:
-    f.write(header + '\n')
-    f.write(cabecalho + '\n')
-    f.write('\\begin(itemize)\n')
-    for i in range(k):
-        f.write('\\item ')
-        f.write(vm.exercicio())
-    f.write('\\end(itemize)\n')
-    f.write(footer)
+print('teste')

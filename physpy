@@ -1,0 +1,10 @@
+#!/bin/bash
+
+SESSION="physpy"
+
+cd /home/ricardo/Documents/projetos/exerciciosVm/
+pipenv run tmux new-session -d -s ${SESSION}
+tmux rename-window -t 0 ${SESSION}
+# tmux send -t ${SESSION} 'cd /home/ricardo/Documents/projetos/exerciciosVm/' ENTER
+tmux send -t ${SESSION} 'nvim' ENTER
+tmux attach-session -t ${SESSION}
