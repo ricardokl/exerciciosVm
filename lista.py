@@ -46,3 +46,5 @@ def rand_valores(x = nr_exercicios, y = nr_versoes):
         print( "==========Lista==========" )
         for e in res:
             print(e)
+
+rand_valores()
