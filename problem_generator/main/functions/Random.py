@@ -2,7 +2,7 @@
 from random import randint, choice
 
 from problem_generator import CONFIG
-from problem_generator.generators.functions.Base import Modifier
+from problem_generator.main.functions.Base import Modifier
 
 
 GROUPS = CONFIG['GROUPS']

@@ -7,6 +7,9 @@ streamlit no servidor do Heroku.
 Atualmente, há diversas funcionalidades ainda a serem desenvolvidas para o funcionamento completo desse projeto. Por 
 enquanto foi apenas desenvolvido um sistema de geração de questão via modificadores pelo Template.
 
+Para rodar o site com o streamlit, rodar o comando:
+> streamlit run main.py
+
 ### TODO:
 - Aplicativo com Streamlit. (Ainda essa semana!)
 - Automatização de Geração de listas prontas em PDF e DOCX.

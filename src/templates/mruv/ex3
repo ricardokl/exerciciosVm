@@ -1,0 +1,2 @@
+Uma {obj|group=projectiles} é lançada do décimo andar de um prédio com velocidade inicial de {v|min=0;max=10} m/s. Sendo a altura nesse ponto igual a {x|min=10;max=20} m e a
+aceleração da gravidade igual a 10 m/s², a velocidade da {obj} ao atingir o chão é:

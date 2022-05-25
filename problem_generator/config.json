@@ -1,10 +1,4 @@
 {
-  "MODIFIERS": [
-    "min",
-    "max",
-    "step"
-  ],
-
   "CONSTANTS": {
   },
 
@@ -15,18 +9,18 @@
       "carro",
       "moto"
     ],
-
     "male_names": [
       "Carlos",
       "Ricardo",
       "Victor",
       "Mario",
       "Renato"
+    ],
+    "projectiles": [
+      "pedra",
+      "bola",
+      "brinquedo",
+      "bola de canhão"
     ]
-  },
-
-  "DEFAULT": {
-    "min": 0,
-    "max": 1000
   }
 }

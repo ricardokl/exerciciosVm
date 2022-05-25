@@ -1,5 +1,5 @@
 """
-__PATH__ = problem_generator/generators/functions/Base.py
+__PATH__ = problem_generator/main/functions/Base.py
 
 This file creates an abstract class to create another modifiers to be applied on variables.
 

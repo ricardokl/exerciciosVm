@@ -1,6 +1,6 @@
 
-from problem_generator.generators.functions.Base import Modifier
-from problem_generator.generators.functions.Random import RandomValue, RandomGroup
+from problem_generator.main.functions.Base import Modifier
+from problem_generator.main.functions.Random import RandomValue, RandomGroup
 
 
 def modifier_parse(args: dict) -> Modifier:

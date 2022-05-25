@@ -4,7 +4,7 @@ from os.path import isfile, join
 from random import randint, choice
 from string import Formatter
 
-from problem_generator.generators.functions.Parser import modifier_parse
+from problem_generator.main.functions.Parser import modifier_parse
 
 
 class Question:
@@ -33,7 +33,7 @@ class Question:
         """
         if not self.question_raw or force:
             self.question_path = choice(self.templates)
-            with open(self.question_path, 'r') as file:
+            with open(self.question_path, 'r', encoding='utf-8') as file:
                 self.question_raw = file.read().strip()
 
             self.get_args_and_variables()
@@ -60,27 +60,17 @@ class Question:
                 self.variables[values[0]] = {'value': None}
                 self.variables[values[0]]['generator'] = modifier_parse(self.args[values[0]]['modifiers'])
 
+            self.randomize()
+
     def randomize(self) -> None:
         """ Randomize the Variables. """
         if self.question_raw and self.args:
             for variable, values in self.variables.items():
                 self.variables[variable]['value'] = values['generator'].generate()
 
-    def mrv(self, vmax: int = 100, xmax: int = 500, dtmax: int = 6) -> None:
-        self.variables['v0'] = randint(-vmax, vmax)
-        self.variables['t0'] = randint(0, 18*4) / 4
-        self.variables['deltat'] = randint(1, dtmax*4) / 4
-        self.variables['tf'] = self.variables['t0'] + self.variables['deltat']
-        self.variables['x0'] = randint(-xmax*4, xmax*4)/4
-        self.variables['x1'] = self.variables['v0'] * self.variables['deltat'] + self.variables['x0']
-        self.variables['obj'] = choice(['carro', 'trem', 'moto', 'caminhão'])
-        self.variables['deltax'] = self.variables['x1'] - self.variables['x0']
-
-        self.apply()
+            self.apply()
 
     def apply(self) -> None:
         """ Apply the variables to the question. """
         variables = {key: value['value'] for key, value in self.variables.items()}
         self.question_with_values = self.question_raw.format(**variables)
-
-
