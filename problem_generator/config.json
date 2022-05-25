@@ -1,0 +1,32 @@
+{
+  "MODIFIERS": [
+    "min",
+    "max",
+    "step"
+  ],
+
+  "CONSTANTS": {
+  },
+
+  "GROUPS": {
+    "auto": [
+      "ônibus",
+      "caminhão",
+      "carro",
+      "moto"
+    ],
+
+    "male_names": [
+      "Carlos",
+      "Ricardo",
+      "Victor",
+      "Mario",
+      "Renato"
+    ]
+  },
+
+  "DEFAULT": {
+    "min": 0,
+    "max": 1000
+  }
+}
