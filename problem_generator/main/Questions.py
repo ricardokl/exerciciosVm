@@ -1,21 +1,32 @@
 
 from os import listdir
 from os.path import isfile, join
-from random import randint, choice
+from random import choice
 from string import Formatter
+from typing import Union
 
 from problem_generator.main.functions.Parser import modifier_parse
 
 
 class Question:
-    def __init__(self, template_path: str, initialize: bool = True):
+    def __init__(self, templates_path: Union[str, list], initialize: bool = True):
         """ Initialize the Question.
 
         TODO:
         - Remove the templates variable to another function.
         - Accept modifiers variables as values from other variables (Queue system)
         """
-        self.templates = [join(template_path, x) for x in listdir(template_path) if isfile(join(template_path, x))]
+        if isinstance(templates_path, list):
+            self.templates = []
+            for path in templates_path:
+                self.templates.extend([
+                    join(path, x) for x in listdir(path) if isfile(join(path, x))
+                ])
+        else:
+            self.templates = [
+                join(templates_path, x) for x in listdir(templates_path) if isfile(join(templates_path, x))
+            ]
+
         self.question_path = None
         self.question_raw = None
         self.question_with_values = None

@@ -76,8 +76,3 @@ class RandomGroup(Modifier):
         group = GROUPS[key]
 
         return choice(group)
-
-
-if __name__ == '__main__':
-    x = RandomGroup(group='male_names')
-    print(x.generate())
