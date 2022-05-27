@@ -76,12 +76,9 @@ class Question:
     def randomize(self) -> None:
         """ Randomize the Variables. """
         if self.question_raw and self.args:
+
             for variable, values in self.variables.items():
                 self.variables[variable]['value'] = values['generator'].generate()
 
-            self.apply()
-
-    def apply(self) -> None:
-        """ Apply the variables to the question. """
-        variables = {key: value['value'] for key, value in self.variables.items()}
-        self.question_with_values = self.question_raw.format(**variables)
+            variables = {key: value['value'] for key, value in self.variables.items()}
+            self.question_with_values = self.question_raw.format(**variables)
