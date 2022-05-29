@@ -1,3 +1,6 @@
+""" problem_generator
+
+"""
 
 from os.path import join, dirname
 from json import load

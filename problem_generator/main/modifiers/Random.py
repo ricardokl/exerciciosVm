@@ -1,8 +1,11 @@
+""" problem_generator.main.modifiers.Random
+
+"""
 
 from random import randint, choice
 
 from problem_generator import CONFIG
-from problem_generator.main.functions.Base import Modifier
+from problem_generator.main.modifiers.Base import Modifier
 
 
 GROUPS = CONFIG['GROUPS']
@@ -31,22 +34,19 @@ class RandomValue(Modifier):
         super(RandomValue, self).__init__(**kwargs)
 
     def generate(self, **kwargs) -> float:
-        """ Generates a random value given the args. """
-        #
-        self.set_args(**kwargs)
+        """ Generates a Random Value Given the Args.
 
-        # Gets all the variables from the args.
-        min_value = int(self.args.get('min', self.MIN_DEFAULT))
-        max_value = int(self.args.get('max', self.MAX_DEFAULT))
+        Returns:
+            A Random Value
+        """
+        min_value = self.parse(self.args.get('min', self.MIN_DEFAULT), **kwargs)
+        max_value = self.parse(self.args.get('max', self.MAX_DEFAULT), **kwargs)
+        step_value = self.parse(self.args.get('step', self.STEP_DEFAULT), **kwargs)
+        left_step_value = self.parse(self.args.get('lstep', step_value), **kwargs)
+        right_step_value = self.parse(self.args.get('rstep', step_value), **kwargs)
+        outer_step_value = self.parse(self.args.get('ostep', step_value), **kwargs)
 
-        # The base value is the step, all other come from above it.
-        # To set all equally define only the step value.
-        step_value = int(self.args.get('step', self.STEP_DEFAULT))
-        lstep_value = int(self.args.get('lstep', step_value))
-        rstep_value = int(self.args.get('rstep', step_value))
-        ostep_value = int(self.args.get('ostep', step_value))
-
-        return randint(min_value * lstep_value, max_value * rstep_value) / ostep_value
+        return randint(min_value * left_step_value, max_value * right_step_value) / outer_step_value
 
 
 class RandomGroup(Modifier):
@@ -76,3 +76,9 @@ class RandomGroup(Modifier):
         group = GROUPS[key]
 
         return choice(group)
+
+
+if __name__ == '__main__':
+    x = RandomValue(min='x0', max='x1')
+    print(x.generate(x0=1))
+

@@ -1,0 +1,3 @@
+Um automóvel se desloca em uma estrada horizontal com velocidade constante de modo tal que os seus pneus rolam sem qualquer
+deslizamento na pista. Cada pneu tem diâmetro {d|min=1;max=2;step=2}, e um medidor colocado em um deles registra uma frequência
+de {f|min=100;max=1000}. A velocidade do automóvel é de:

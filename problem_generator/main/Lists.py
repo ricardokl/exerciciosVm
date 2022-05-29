@@ -1,35 +1,61 @@
+""" problem_generator.main.Lists
 
+This package defines the ListOfQuestions object.
+
+TODO:
+- Multiple versions of a list.
+- Multiple different lists.
+"""
 
 from typing import Union
 
 from problem_generator.main.Questions import Question
+from problem_generator.main.Utils import get_all_templates
 
 
-class QuestionList:
-    def __init__(self, templates: Union[str, list], n_questions: int = 5, init: bool = True):
-        """ Initialize the Question List.
+class ListOfQuestions:
+    def __init__(self, path: Union[str, list], number_of_questions: int = 5, init: bool = True, **kwargs) -> None:
+        """ Initialize a List of Questions.
 
         Args:
-            templates: A Template Path or a List of Templates Path containing the Questions.
-            n_questions: Number of Questions of the List
+            path: A Template Path or a List of Templates Path containing the Questions.
+            number_of_questions: Number of Questions of the List
         """
-        self.templates = templates
+        self._path = path
+        if not kwargs.get('copy', False):
+            self._templates = get_all_templates(self._path)
+
         self.questions = []
-        self.n_questions = n_questions
+        self.number_of_questions = number_of_questions
 
         if init:
             self.generate()
 
+    @property
+    def path(self):
+        return self._path
+
+    @path.setter
+    def path(self, value):
+        self._path = value
+        self._templates = get_all_templates(self.path)
+
+    @property
+    def amount_of_questions(self):
+        return len(self._templates)
+
     def generate(self) -> list:
-        """ Generates a List of Questions.
+        """ Generates a given Number of Questions.
 
         Returns:
             A List containing the Generated Questions.
         """
         self.questions.clear()
 
-        for _ in range(self.n_questions):
-            self.questions.append(Question(self.templates))
+        for _ in range(self.number_of_questions):
+            new_question = Question()
+            new_question.choose(templates=self._templates)
+            self.questions.append(new_question)
 
         return self.questions
 
@@ -44,66 +70,15 @@ class QuestionList:
 
         return self.questions
 
-    def copy_questions(self, questions: list) -> None:
-        paths = [q.question_path for q in questions]
-        new_questions = []
-
-        for path in paths:
-            q = Question(templates_path='')
+    def __copy__(self):
+        new = type(self)(path=self.path, number_of_questions=self.number_of_questions, copy=True)
+        new.__dict__.update(self.__dict__)
+        return new
 
 
-class MultipleVersions:
-    def __init__(self, templates: Union[str, list], n_questions: int = 5, n_versions: int = 2, init: bool = True):
-        self.templates = templates
-        self.questions = []
-        self.n_questions = n_questions
-        self.n_versions = n_versions
-        self.lists = []
+def get_multiple_versions():
+    pass
 
-        if init:
-            self.init()
 
-    def init(self, apply: bool = True) -> QuestionList:
-        """ Generates a Base Question List.
-
-        All the versions will use the same questions from the base question list, but with random variables.
-
-        TODO:
-        - This may be not the best method to generates all the versions, or how it's stored, but for now it's
-        enough, and will generate great randomized question lists.
-
-        Args:
-            apply: If True generates all the other question lists.
-
-        Returns:
-            The Base Question List.
-        """
-        self.lists.clear()
-
-        base = QuestionList(templates=self.templates, n_questions=self.n_questions)
-        self.lists.append(base)
-        self.questions = base.questions
-
-        if apply:
-            self.generate()
-
-        return self.lists[0]
-
-    def randomize(self) -> list:
-        pass
-
-    def generate(self) -> list:
-        """ Generates all the Question Lists Versions. """
-        if not self.lists:
-            self.init(apply=False)
-
-        base = self.lists[0]
-        questions = base.questions.copy()
-        for _ in range(self.n_versions - 1):
-            version = QuestionList(templates=self.templates, init=False)
-            version.questions = base.questions.copy()
-            version.randomize()
-
-            self.lists.append(version)
-
-        return self.lists
+def get_different_versions():
+    pass

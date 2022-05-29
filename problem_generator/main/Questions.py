@@ -1,84 +1,112 @@
+""" problem_generator.main.Questions
 
-from os import listdir
-from os.path import isfile, join
+This packages defines the Question object.
+
+TODO:
+- For now the templates are collected by a path or a list of paths, and with a databases? Or texts?
+- Use another variables as modifiers boundaries (Queue system).
+"""
+
 from random import choice
 from string import Formatter
-from typing import Union
 
-from problem_generator.main.functions.Parser import modifier_parse
+from problem_generator.main.modifiers.Parser import modifier_parse
+from problem_generator.main.Utils import order_queue, get_all_templates
 
 
 class Question:
-    def __init__(self, templates_path: Union[str, list], initialize: bool = True):
-        """ Initialize the Question.
+    def __init__(self) -> None:
+        """ Initialize a Question. """
+        self._raw = None
+        self.path = None
+        self.mods = {}
+        self.vars = {}
+        self.order = []
 
-        TODO:
-        - Remove the templates variable to another function.
-        - Accept modifiers variables as values from other variables (Queue system)
-        """
-        if isinstance(templates_path, list):
-            self.templates = []
-            for path in templates_path:
-                self.templates.extend([
-                    join(path, x) for x in listdir(path) if isfile(join(path, x))
-                ])
-        else:
-            self.templates = [
-                join(templates_path, x) for x in listdir(templates_path) if isfile(join(templates_path, x))
-            ]
+    @property
+    def raw(self) -> str:
+        return self._raw
 
-        self.question_path = None
-        self.question_raw = None
-        self.question_with_values = None
-        self.args = {}
-        self.variables = {}
+    @raw.setter
+    def raw(self, value) -> None:
+        self._raw = value
+        self._get_args_and_variables()
 
-        if initialize:
-            self.choose()
-
-    def choose(self, force: bool = False) -> None:
-        """ Choose a Random Question on Template Path.
+    def choose(self, templates: list, **kwargs):
+        """ Choose a Random Template of a List of Templates.
 
         Args:
-            force: Force the Object to Select a New Question (Use it as Last Resource).
+            templates: A list of templates.
+
+        Returns:
+            None
+       """
+        if kwargs.get('collect', False):
+            templates = get_all_templates(templates)
+
+        self.path = choice(templates)
+        with open(self.path, 'r', encoding='utf-8') as file:
+            self.raw = file.read().strip()
+
+        return self
+
+    def randomize(self) -> str:
+        """ Randomize the Variables.
+
+        Uses the modifiers generators to randomize the variables of the question.
+
+        Returns:
+            The question text with the randomized variables.
         """
-        if not self.question_raw or force:
-            self.question_path = choice(self.templates)
-            with open(self.question_path, 'r', encoding='utf-8') as file:
-                self.question_raw = file.read().strip()
+        if not self.mods:
+            raise Warning('Modifiers are not defined.')
 
-            self.get_args_and_variables()
+        values = [self.mods[v] for v in self.order]
+        for key, val in zip(self.order, values):
+            self.vars[key] = val['generator'].generate(**self.vars)
 
-    def get_args_and_variables(self) -> None:
-        """ Set the String Format Args to a Dictionary. """
-        if self.question_raw:
-            args = [fn for _, fn, _, _ in Formatter().parse(self.question_raw) if fn is not None]
-            for arg in args:
-                values = arg.split('|')
-                if not values[0] in self.args.keys():
-                    self.args[values[0]] = {'modifiers': None}
+        return self.raw.format(**self.vars)
 
-                if len(values) > 1:
-                    self.question_raw = self.question_raw.replace(arg, values[0])
-                    mods = [i.split('=') for i in values[1].split(';')]
-                    mods_to_dict = {mod[0].strip(): mod[1] for mod in mods}
-                    if self.args[values[0]].get('modifiers', None):
-                        self.args[values[0]]['modifiers'].update(mods_to_dict)
+    def _get_args_and_variables(self) -> None:
+        """ [PRIVATE] Set the String Format Args to a Dictionary.
 
-                    else:
-                        self.args[values[0]]['modifiers'] = mods_to_dict
+        Scrape all the variables and it's modifiers of the question text.
 
-                self.variables[values[0]] = {'value': None}
-                self.variables[values[0]]['generator'] = modifier_parse(self.args[values[0]]['modifiers'])
+        Returns:
+            None
+        """
+        if not self._raw:
+            return
 
-            self.randomize()
+        args = [fn for _, fn, _, _ in Formatter().parse(self._raw) if fn is not None]
+        for arg in args:
+            values = arg.split('|')
+            if not values[0] in self.mods.keys():
+                self.mods[values[0]] = {'modifiers': None}
 
-    def randomize(self) -> None:
-        """ Randomize the Variables. """
-        if self.question_raw and self.args:
+            if len(values) > 1:
+                self._raw = self._raw.replace(arg, values[0])
+                mods = [i.split('=') for i in values[1].split(';')]
+                mods_to_dict = {mod[0].strip(): mod[1] for mod in mods}
+                if self.mods[values[0]].get('modifiers', None):
+                    self.mods[values[0]]['modifiers'].update(mods_to_dict)
 
-            for variable, values in self.variables.items():
-                self.variables[variable]['value'] = values['generator'].generate()
+                else:
+                    self.mods[values[0]]['modifiers'] = mods_to_dict
 
-            variables = {key: value['value'] for key, value in self.variables.items()}
-            self.question_with_values = self.question_raw.format(**variables)
+            self.mods[values[0]]['generator'] = modifier_parse(self.mods[values[0]]['modifiers'])
+
+        order_dict = {key: values['modifiers'] for key, values in self.mods.items()}
+        self.order = order_queue(order_dict)
+        self.randomize()
+
+    def __copy__(self):
+        new = type(self)()
+        new.__dict__.update(self.__dict__)
+        return new
+
+    def __repr__(self):
+        if self.raw and self.vars:
+            return self.raw.format(**self.vars)
+
+        return None

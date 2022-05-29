@@ -1,9 +1,9 @@
-"""
-__PATH__ = problem_generator/main/functions/Base.py
+""" problem_generator.main.modifiers.Base
 
-This file creates an abstract class to create another modifiers to be applied on variables.
 
 """
+
+from typing import Type
 
 
 class Modifier:
@@ -24,3 +24,14 @@ class Modifier:
     def generate(self, **kwargs):
         """ Generates a Random Value. """
         raise NotImplementedError('Needs to be Implemented.')
+
+    def verify(self):
+        as_string = [v for k, v in self.args.items() if isinstance(v, str)]
+        return as_string
+
+    @staticmethod
+    def parse(value, type_: Type = int, **kwargs) -> any:
+        if kwargs.get(value, False):
+            return kwargs[value]
+
+        return type_(value)

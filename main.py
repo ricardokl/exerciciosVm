@@ -1,21 +1,22 @@
 
 import streamlit as st
 
-from problem_generator.main.Questions import Question
+from problem_generator.main.Lists import ListOfQuestions
 
 
 st.title('Gerador de Lista de Exercícios')
-gen = st.button('Gerar')
 
-if gen:
-    st.markdown('### Questão 1')
-    q1 = Question(template_path='src/templates/mruv')
-    st.write(q1.question_with_values)
+theme = st.radio('Tema', ('Movimento Retilíneo Uniforme Variado', 'Movimento Circular Uniforme',))
+if theme == 'Movimento Retilíneo Uniforme Variado':
+    path = 'src/templates/cinemática/mruv'
+else:
+    path = 'src/templates/cinemática/mcu'
 
-    st.markdown('### Questão 2')
-    q2 = Question(template_path='src/templates/mruv')
-    st.write(q2.question_with_values)
+question_list = ListOfQuestions(path=path, number_of_questions=2)
+question_list.generate()
+for question in question_list.questions:
+    st.markdown(question)
 
-    st.markdown('### Questão 3')
-    q3 = Question(template_path='src/templates/mruv')
-    st.write(q3.question_with_values)
+generate_list = st.button('Gerar')
+if generate_list:
+    question_list.generate()

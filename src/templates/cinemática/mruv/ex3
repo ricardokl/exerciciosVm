@@ -1,0 +1,2 @@
+Um {obj|group=projectiles} é solto do {h|min=1;max=10} andar de um prédio. Sendo a altura nesse ponto igual a {x|min=10;max=20} metros
+e a aceleração da gravidade igual a 10 m/s^2, a velocidade do {obj} ao atingir o chão é:
