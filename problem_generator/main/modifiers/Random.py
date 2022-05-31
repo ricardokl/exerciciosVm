@@ -47,7 +47,7 @@ class RandomValue(Modifier):
 
     def formatter(self, value, **kwargs) -> str:
         comma = self.fmt_args.get('comma', self.COMMA_DEFAULT)
-        decimals = self.parse(self.fmt_args.get('', self.DECIMALS_DEFAULT), **kwargs)
+        decimals = self.parse(self.fmt_args.get('decimals', self.DECIMALS_DEFAULT), **kwargs)
         if decimals == 0:
             value = str(int(value))
         else:

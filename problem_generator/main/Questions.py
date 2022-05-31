@@ -10,17 +10,23 @@ TODO:
 from random import choice
 from string import Formatter
 
+from numexpr import evaluate
+
+from problem_generator import METADATA_INIT
 from problem_generator.main.modifiers.Parser import modifier_parse
-from problem_generator.main.Utils import get_order_queue, get_all_templates
+from problem_generator.main.Utils import get_metadata, get_order_queue, get_all_templates
 
 
 class Question:
     def __init__(self) -> None:
         """ Initialize a Question. """
         self._raw = None
+        self.meta = None
         self.path = None
+        self.func = None
         self.mods = {}
         self.vars = {}
+        self.fmt_vars = {}
         self.order = []
 
     @property
@@ -29,7 +35,16 @@ class Question:
 
     @raw.setter
     def raw(self, value) -> None:
-        self._raw = value
+        values = value.split(METADATA_INIT)
+        if len(values) <= 1:
+            meta = None
+            raw = values[0]
+        else:
+            meta = values[0]
+            raw = values[1]
+
+        self.meta = meta
+        self._raw = raw
         self._get_args_and_variables()
 
     def choose(self, templates: list, **kwargs):
@@ -37,6 +52,9 @@ class Question:
 
         Args:
             templates: A list of templates.
+            **kwargs: [
+                collect: Receives a path or a list of paths of templates and collect it. [Build Only]
+            ]
 
         Returns:
             None
@@ -64,8 +82,16 @@ class Question:
         values = [self.mods[v] for v in self.order]
         for key, val in zip(self.order, values):
             self.vars[key] = val['generator'].generate(**self.vars)
+            self.fmt_vars[key] = val['generator'].formatter(self.vars[key])
 
-        return self.raw.format(**self.vars)
+        return self.raw.format(**self.fmt_vars)
+
+    def answer(self) -> str:
+        if self.raw and self.vars:
+            expr = self.func
+            return evaluate(expr.format(**self.vars))
+
+        return ''
 
     def _get_args_and_variables(self) -> None:
         """ [PRIVATE] Set the String Format Args to a Dictionary.
@@ -78,11 +104,21 @@ class Question:
         if not self._raw:
             return
 
+        global_args, global_fmts, func = get_metadata(metadata=self.meta)
+        self.func = func
+        self.mods.update(global_args)
+
         args = [fn for _, fn, _, _ in Formatter().parse(self._raw) if fn is not None]
         for arg in args:
             values = arg.split('|')
-            if not values[0] in self.mods.keys():
-                self.mods[values[0]] = {'modifiers': None}
+            if len(values) == 1 and not values[0]:
+                self._raw = self._raw.replace('{' + values[0] + '}', '')
+                continue
+
+            if values[0] not in self.mods.keys():
+                self.mods[values[0]] = {'modifiers': {}}
+
+            self.mods[values[0]]['modifiers'].update(global_fmts)
 
             if len(values) > 1:
                 self._raw = self._raw.replace(arg, values[0])
@@ -107,6 +143,6 @@ class Question:
 
     def __repr__(self):
         if self.raw and self.vars:
-            return self.raw.format(**self.vars)
+            return self.raw.format(**self.fmt_vars)
 
         return None

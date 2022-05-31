@@ -53,7 +53,6 @@ class Modifier:
     def parse(value, type_: Type = int, **kwargs) -> any:
         variables = [i for i in kwargs.keys() if i in str(value)]
         if kwargs.get(value, False):
-            print(kwargs[value], '\n\n')
             try:
                 return float(kwargs[value])
             except ValueError:

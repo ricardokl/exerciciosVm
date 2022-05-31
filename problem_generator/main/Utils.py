@@ -12,6 +12,8 @@ from os import listdir
 from os.path import isfile, join
 from typing import Union
 
+from problem_generator.main.modifiers.Parser import modifier_parse
+from numexpr import evaluate
 
 OPERATIONS_ALLOWED = ['+', '-', '*', '/', '**']
 
@@ -35,7 +37,44 @@ def get_all_templates(path: Union[str, list]):
     return templates
 
 
-def get_variables_connections(values: list, variables: list) -> list:
+def get_metadata(metadata: str):
+    args = {}
+    fmts = {}
+    func = None
+
+    if not metadata:
+        return args, fmts, func
+
+    lines = metadata.split('\n')
+    for line in lines:
+        if '|' in line:
+            values = line.split('|')
+            if len(values) == 1 or not values[0]:
+                continue
+
+            arg = values[0].strip()
+            args[arg] = {}
+            mods = [i.split('=') for i in values[1].split(';')]
+            mods_to_dict = {mod[0].strip(): mod[1] for mod in mods}
+            args[arg]['modifiers'] = mods_to_dict
+            args[arg]['generator'] = modifier_parse(**mods_to_dict)
+
+        elif line.startswith('f='):
+            func = line[2:].strip()
+
+        elif '=' in line:
+            values = line.split('=')
+            if len(values) == 1 or not values[0]:
+                continue
+
+            mod = values[0]
+            val = values[1]
+            fmts[mod] = val
+
+    return args, fmts, func
+
+
+def get_connections(values: list, variables: list) -> list:
     """ Get the Correlations of Values and Variables of a Row.
 
     Args:
@@ -60,39 +99,7 @@ def get_variables_connections(values: list, variables: list) -> list:
     return connects_to
 
 
-def get_order_queue(mods: dict) -> list:
-    """ Order the Variables Executions to Generate the Values.
-
-    Args:
-       mods: The modifiers dictionary.
-
-    Returns:
-        A list containing the modifiers order.
-    """
-    if not verify_connections_loop(mods=mods):
-        raise ValueError('Variables are creating a Loop.')
-
-    variables = list(mods.keys())
-    queue = []
-    for var in mods.keys():
-        values = mods[var].values()
-        bounds = set([i for i in variables for j in list(values) if i in j])
-        if bounds:
-            if var in bounds:
-                raise ValueError(f'{var} depends on it self.')
-
-            indexes = [queue.index(i) for i in bounds if i in queue]
-            if indexes:
-                queue.insert(max(indexes)+1, var)
-            else:
-                queue.insert(-1, var)
-        else:
-            queue.insert(0, var)
-
-    return queue
-
-
-def verify_connections_loop(mods: dict) -> bool:
+def verify_connections_to_not_loop(mods: dict) -> bool:
     """ Verify if the Modifiers Values does not Create a Loop.
 
     This function creates a correlation matrix with the variables from the modifier dictionary, and
@@ -110,7 +117,7 @@ def verify_connections_loop(mods: dict) -> bool:
     for i, var in enumerate(variables):
         values = mods[var].values()
         connections[i][i] = 1
-        connects_to = get_variables_connections(values=values, variables=variables)
+        connects_to = get_connections(values=values, variables=variables)
         for c in connects_to:
             connections[i][c] = 1
 
@@ -119,3 +126,35 @@ def verify_connections_loop(mods: dict) -> bool:
         return False
 
     return True
+
+
+def get_order_queue(mods: dict) -> list:
+    """ Order the Variables Executions to Generate the Values.
+
+    Args:
+       mods: The modifiers dictionary.
+
+    Returns:
+        A list containing the modifiers order.
+    """
+    if not verify_connections_to_not_loop(mods=mods):
+        raise ValueError('Variables are creating a Loop.')
+
+    variables = list(mods.keys())
+    queue = []
+    for var in mods.keys():
+        values = mods[var].values()
+        bounds = set([i for i in variables for j in list(values) if i == j])
+        if bounds:
+            if var in bounds:
+                raise ValueError(f'{var} depends on it self.')
+
+            indexes = [queue.index(i) for i in bounds if i in queue]
+            if indexes:
+                queue.insert(max(indexes)+1, var)
+            else:
+                queue.insert(-1, var)
+        else:
+            queue.insert(0, var)
+
+    return queue

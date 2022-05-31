@@ -10,5 +10,7 @@ __VERSION__ = '0.0.1'
 __BRANCH__ = 'heroku'
 __CONFIG__ = 'config.json'
 
+METADATA_INIT = '---'
+
 with open(join(dirname(__file__), __CONFIG__), 'r', encoding='utf-8') as file:
     CONFIG = load(file)
