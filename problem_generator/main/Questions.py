@@ -11,7 +11,7 @@ from random import choice
 from string import Formatter
 
 from problem_generator.main.modifiers.Parser import modifier_parse
-from problem_generator.main.Utils import order_queue, get_all_templates
+from problem_generator.main.Utils import get_order_queue, get_all_templates
 
 
 class Question:
@@ -94,10 +94,10 @@ class Question:
                 else:
                     self.mods[values[0]]['modifiers'] = mods_to_dict
 
-            self.mods[values[0]]['generator'] = modifier_parse(self.mods[values[0]]['modifiers'])
+            self.mods[values[0]]['generator'] = modifier_parse(**self.mods[values[0]]['modifiers'])
 
         order_dict = {key: values['modifiers'] for key, values in self.mods.items()}
-        self.order = order_queue(order_dict)
+        self.order = get_order_queue(order_dict)
         self.randomize()
 
     def __copy__(self):

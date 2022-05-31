@@ -3,6 +3,9 @@
   },
 
   "GROUPS": {
+    "default": [
+      "<value>"
+    ],
     "auto": [
       "ônibus",
       "caminhão",

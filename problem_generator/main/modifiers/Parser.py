@@ -3,21 +3,15 @@
 """
 
 from problem_generator.main.modifiers.Base import Modifier
-from problem_generator.main.modifiers.Random import RandomValue, RandomGroup
+
+DEFAULT_MODIFIERS = {cls.PARSER: cls for cls in Modifier.__subclasses__()}
 
 
-def modifier_parse(args: dict) -> Modifier:
-    """ A simple parser to identify which modifier to use.
-
-    TODO:
-    - For now it's very simple and objective, but it tends to have a higher complexity by time.
-    """
-    if not args:
-        return RandomValue()
-
-    elif 'group' in args.keys():
-        return RandomGroup(**args)
-
+def modifier_parse(**kwargs) -> Modifier:
+    """ Identifiers the Modifier to use given the Args. """
+    keys = kwargs.keys()
+    mods = [i for i in keys if i in DEFAULT_MODIFIERS.keys()]
+    if len(mods) > 0:
+        return DEFAULT_MODIFIERS[mods[0]](**kwargs)
     else:
-        return RandomValue(**args)
-
+        return DEFAULT_MODIFIERS['default'](**kwargs)

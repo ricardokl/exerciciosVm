@@ -1,0 +1,3 @@
+Considere dois móveis que, sobre uma mesma trajetória, realizam movimentos que obedecem às funções horárias
+s1 = {s01|min=-10;max=10} + {v01|min=1;max=10}t e s2 = {s02|delta=3;anchor=s01} - {v02|min=2;max=6}t +
+{a02|min=1;max=4}t² (s em metros e t em segundos). Em que instante esses móveis se cruzam?

@@ -15,7 +15,7 @@ else:
 question_list = ListOfQuestions(path=path, number_of_questions=2)
 question_list.generate()
 for question in question_list.questions:
-    st.markdown(question)
+    st.markdown(f'<div style="text-align:justify; margin-bottom: 20px;">{question}<br></div>', unsafe_allow_html=True)
 
 generate_list = st.button('Gerar')
 if generate_list:
