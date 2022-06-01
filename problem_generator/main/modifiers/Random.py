@@ -2,7 +2,10 @@
 
 """
 
-from random import randint
+from random import randint, choice
+
+from numpy import arange
+
 from problem_generator.main.modifiers.Base import Modifier
 
 
@@ -12,9 +15,8 @@ class RandomValue(Modifier):
         'min',
         'max',
         'step',
-        'lstep',
-        'rstep',
-        'ostep',
+        'div',
+        'multi'
     ]
 
     FORMATTER_KWARGS = [
@@ -25,6 +27,8 @@ class RandomValue(Modifier):
     MIN_DEFAULT = 0
     MAX_DEFAULT = 1000
     STEP_DEFAULT = 1
+    MULTI_DEFAULT = 1
+    DIV_DEFAULT = 1
 
     COMMA_DEFAULT = True
     DECIMALS_DEFAULT = 1
@@ -38,12 +42,12 @@ class RandomValue(Modifier):
         min_ = self.parse(self.args.get('min', self.MIN_DEFAULT), **kwargs)
         max_ = self.parse(self.args.get('max', self.MAX_DEFAULT), **kwargs)
         step = self.parse(self.args.get('step', self.STEP_DEFAULT), **kwargs)
-        left_step = self.parse(self.args.get('lstep', step), **kwargs)
-        right_step = self.parse(self.args.get('rstep', step), **kwargs)
-        outer_step = self.parse(self.args.get('ostep', step), **kwargs)
+        multi = self.parse(self.args.get('multi', self.MULTI_DEFAULT), **kwargs)
+        div = self.parse(self.args.get('div', self.DIV_DEFAULT), **kwargs)
+        if div == 0:
+            div = 1
 
-        value = randint(min_ * left_step, max_ * right_step) / outer_step
-        return value
+        return float(choice(arange(min_, max_, step))) * multi / div
 
     def formatter(self, value, **kwargs) -> str:
         comma = self.fmt_args.get('comma', self.COMMA_DEFAULT)
