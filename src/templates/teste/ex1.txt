@@ -1,0 +1,5 @@
+decimals=0
+f={m}*{v}**2/2
+---
+Calcule a energia cinética de um móvel cuja a massa é igual a {m|min=1;max=10} kg, se movimentando com uma velocidade igual a
+{v|min=20;max=30} m/s.

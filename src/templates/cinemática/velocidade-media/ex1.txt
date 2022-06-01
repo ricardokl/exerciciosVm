@@ -1,6 +1,5 @@
-t23|min=0;max=2
 decimals=0
 f=({xf}-{x0})/({tf}-{t})
 ---
-Um {obj|group=auto} passa pelo KM {x0|min=10;max=50} de uma rodovia às {t|delta=10;anchor=t23} h, e às {tf|min=t;max=t+20} h passa pelo KM {xf|min=x0;max=200}.
+Um {obj|group=auto} passa pelo KM {x0|min=10;max=50;step=10} de uma rodovia às {t|min=2;max=12;step=2} h, e às {tf|min=t;max=22;step=2} h passa pelo KM {xf|min=x0;max=200;step=10}.
 Qual é a velocidade escalar média desenvolvida pelo ônibus nesse intervalo de tempo?

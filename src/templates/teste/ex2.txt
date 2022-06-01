@@ -1,0 +1,4 @@
+decimals=0
+f=(1-{percent}/100)*{p}
+---
+Comprei batata congelada por {p|min=5;max=10}, tire um desconto de {percent|min=10;max=25}.
