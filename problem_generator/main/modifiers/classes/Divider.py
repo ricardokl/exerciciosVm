@@ -1,6 +1,6 @@
 
 from problem_generator.main.modifiers.Base import Modifier
-from problem_generator.main.modifiers.Random import RandomValue
+from problem_generator.main.modifiers.classes.Random import RandomValue
 
 
 class DividerValue(Modifier):
@@ -20,8 +20,8 @@ class DividerValue(Modifier):
         super(DividerValue, self).__init__(**kwargs)
 
     def generate(self, **kwargs) -> str:
-        anchor = self.parse(self.args.get('anchor', self.ANCHOR_DEFAULT), type_=float, **kwargs)
-        div_ = self.parse(self.args.get('div', self.DIV_DEFAULT), type_=float, **kwargs)
+        anchor = self.parser(self.args.get('anchor', self.ANCHOR_DEFAULT), type_=float, **kwargs)
+        div_ = self.parser(self.args.get('div', self.DIV_DEFAULT), type_=float, **kwargs)
         if div_ == 0:
             div_ = self.DIV_DEFAULT
 

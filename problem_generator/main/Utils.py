@@ -2,20 +2,18 @@
 
 This package contains useful functions to use on the project.
 
-TODO:
-- Accept multiple variables on modifiers.
+TODO:n modifiers.
+-
 """
 
+import re
 import numpy as np
 
 from os import listdir
 from os.path import isfile, join
 from typing import Union
 
-from problem_generator.main.modifiers.Parser import modifier_parse
-from numexpr import evaluate
-
-OPERATIONS_ALLOWED = ['+', '-', '*', '/', '**']
+OPERATIONS_ALLOWED = ['+', '-', '*', '/', '^']
 
 
 def get_all_templates(path: Union[str, list]):
@@ -37,53 +35,52 @@ def get_all_templates(path: Union[str, list]):
     return templates
 
 
-def get_metadata(metadata: str):
-    args = {}
-    fmts = {}
-    func = None
+def interpret(value):
+    if not any([i in value for i in OPERATIONS_ALLOWED]):
+        return float(value)
 
-    if not metadata:
-        return args, fmts, func
+    else:
+        if '+' in value or '-' in value:
+            composition = re.compile(r'[\+\-]').split(value)
+        else:
+            composition = re.compile(r'[\*\/]').split(value)
 
-    lines = metadata.split('\n')
-    for line in lines:
-        if '|' in line:
-            values = line.split('|')
-            if len(values) == 1 or not values[0]:
-                continue
+        position = len(composition)
 
-            arg = values[0].strip()
-            args[arg] = {}
-            mods = [i.split('=') for i in values[1].split(';')]
-            mods_to_dict = {mod[0].strip(): mod[1] for mod in mods}
-            args[arg]['modifiers'] = mods_to_dict
-            args[arg]['generator'] = modifier_parse(**mods_to_dict)
+        left = value[:position]
+        right = value[position+1:]
 
-        elif line.startswith('f='):
-            func = line[2:].strip()
+        operator = value[position]
 
-        elif '=' in line:
-            values = line.split('=')
-            if len(values) == 1 or not values[0]:
-                continue
+        if operator == '+':
+            return interpret(left) + interpret(right)
 
-            mod = values[0]
-            val = values[1]
-            fmts[mod] = val
+        elif operator == '-':
+            return interpret(left) - interpret(right)
 
-    return args, fmts, func
+        elif operator == '*':
+            return interpret(left) * interpret(right)
+
+        elif operator == '/':
+            denominator = interpret(right)
+            if denominator == 0:
+                return None
+            else:
+                return interpret(left) / denominator
 
 
-def get_connections(values: list, variables: list) -> list:
-    """ Get the Correlations of Values and Variables of a Row.
+
+
+def get_connections(values: list, variables: list, index: bool = True) -> list:
+    """ Get the Correlations between Variables of a Row.
 
     Args:
-        values: The values of the modifiers of a variable.
-        variables: The variables.
+        values: The arguments of the variable modifiers.
+        variables: All variables.
+        index: If True returns the variables index.
 
     Returns:
-        A list containing the connected variables.
-
+        [list] A list containing the connected variables.
     """
     connects_to = []
     for j in values:
@@ -96,7 +93,10 @@ def get_connections(values: list, variables: list) -> list:
             if i in variables_in_raw and i not in connects_to:
                 connects_to.append(variables.index(i))
 
-    return connects_to
+    if index:
+        return connects_to
+    else:
+        return [variables[i] for i in connects_to]
 
 
 def verify_connections_to_not_loop(mods: dict) -> bool:
@@ -109,7 +109,7 @@ def verify_connections_to_not_loop(mods: dict) -> bool:
         mods: The modifiers dictionary.
 
     Returns:
-        True if it's verified, else False.
+        [bool] True if it's verified, else False.
     """
     variables = list(mods.keys())
     n = len(variables)
@@ -144,7 +144,8 @@ def get_order_queue(mods: dict) -> list:
     queue = []
     for var in mods.keys():
         values = mods[var].values()
-        bounds = set([i for i in variables for j in list(values) if i == j])
+        # bounds = set([i for i in variables for j in list(values) if i == j])
+        bounds = get_connections(values, variables, index=False)
         if bounds:
             if var in bounds:
                 raise ValueError(f'{var} depends on it self.')

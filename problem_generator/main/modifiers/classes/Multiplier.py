@@ -1,6 +1,6 @@
 
 from problem_generator.main.modifiers.Base import Modifier
-from problem_generator.main.modifiers.Random import RandomValue
+from problem_generator.main.modifiers.classes.Random import RandomValue
 
 
 class MultiplierValue(Modifier):
@@ -20,8 +20,8 @@ class MultiplierValue(Modifier):
         super(MultiplierValue, self).__init__(**kwargs)
 
     def generate(self, **kwargs) -> str:
-        anchor = self.parse(self.args.get('anchor', self.ANCHOR_DEFAULT), type_=float, **kwargs)
-        multi = self.parse(self.args.get('div', self.MULTI_DEFAULT), type_=float, **kwargs)
+        anchor = self.parser(self.args.get('anchor', self.ANCHOR_DEFAULT), type_=float, **kwargs)
+        multi = self.parser(self.args.get('div', self.MULTI_DEFAULT), type_=float, **kwargs)
         return anchor * multi
 
     def formatter(self, value) -> str:

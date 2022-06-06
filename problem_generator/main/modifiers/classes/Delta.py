@@ -3,13 +3,13 @@
 """
 
 from problem_generator.main.modifiers.Base import Modifier
-from problem_generator.main.modifiers.Random import RandomValue
+from problem_generator.main.modifiers.classes.Random import RandomValue
 
 
 class DeltaValue(Modifier):
     KWARGS = [
         'anchor',
-        'delta',
+        'delta'
     ]
 
     FORMATTER_KWARGS = RandomValue.FORMATTER_KWARGS
@@ -23,8 +23,8 @@ class DeltaValue(Modifier):
         super(DeltaValue, self).__init__(**kwargs)
 
     def generate(self, **kwargs) -> str:
-        anchor = self.parse(self.args.get('anchor', self.ANCHOR_DEFAULT), type_=float, **kwargs)
-        delta = self.parse(self.args.get('delta', self.DELTA_DEFAULT), type_=float, **kwargs)
+        anchor = self.parser(self.args.get('anchor', self.ANCHOR_DEFAULT), type_=float, **kwargs)
+        delta = self.parser(self.args.get('delta', self.DELTA_DEFAULT), type_=float, **kwargs)
         return anchor + delta
 
     def formatter(self, value) -> str:

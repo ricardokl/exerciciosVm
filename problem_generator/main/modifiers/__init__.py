@@ -1,9 +1,9 @@
-""" problem_generator.main.modifiers
+""" problem_generator.main.modifiers.classes
 
+This package imports all modifiers classes to initialize the parser dictionary.
+
+TODO:
+- Injection system.
 """
 
-from problem_generator.main.modifiers.Random import RandomValue
-from problem_generator.main.modifiers.Group import GroupValue
-from problem_generator.main.modifiers.Delta import DeltaValue
-from problem_generator.main.modifiers.Divider import DividerValue
-from problem_generator.main.modifiers.Multiplier import MultiplierValue
+from .classes import *

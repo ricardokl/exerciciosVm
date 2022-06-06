@@ -1,33 +1,33 @@
 """ problem_generator.main.Questions
 
-This packages defines the Question object.
+This packages contains the Question object.
 
 TODO:
-- For now the templates are collected by a path or a list of paths, and with a databases? Or texts?
-- Use another variables as modifiers boundaries (Queue system).
+- Databases implementation.
+- Own Parser
 """
 
 from random import choice
-from string import Formatter
-
-from numexpr import evaluate
 
 from problem_generator import METADATA_INIT
-from problem_generator.main.modifiers.Parser import modifier_parse
-from problem_generator.main.Utils import get_metadata, get_order_queue, get_all_templates
+from problem_generator.main.modifiers.Utils import get_clean_text_and_variables, get_metadata
+from problem_generator.main.Utils import get_order_queue, get_all_templates
+from problem_generator.parser.Compute import evaluate
 
 
 class Question:
     def __init__(self) -> None:
-        """ Initialize a Question. """
-        self._raw = None
-        self.meta = None
+        """ Initialize the Question Object. """
+        self.text = None
         self.path = None
-        self.func = None
-        self.mods = {}
-        self.vars = {}
-        self.fmt_vars = {}
+        self.function = None
+        self.variables = {}
+        self.values = {}
+        self.values_formatted = {}
         self.order = []
+
+        self._raw = None
+        self._raw_metadata = None
 
     @property
     def raw(self) -> str:
@@ -36,28 +36,23 @@ class Question:
     @raw.setter
     def raw(self, value) -> None:
         values = value.split(METADATA_INIT)
-        if len(values) <= 1:
-            meta = None
-            raw = values[0]
-        else:
-            meta = values[0]
-            raw = values[1]
+        meta, raw = [None, *values] if len(values) <= 1 else [*values[:2]]
 
-        self.meta = meta
+        self._raw_metadata = meta
         self._raw = raw
-        self._get_args_and_variables()
+        self._set_variables()
+        self._set_metadata(text=meta)
+        self._set_order()
+        self.randomize()
 
-    def choose(self, templates: list, **kwargs):
+    def choose(self, templates: list, **kwargs) -> None:
         """ Choose a Random Template of a List of Templates.
 
         Args:
             templates: A list of templates.
-            **kwargs: [
-                collect: Receives a path or a list of paths of templates and collect it. [Build Only]
-            ]
 
-        Returns:
-            None
+        Kwargs:
+            collect: Set True to collect all templates of a path or list of paths.
        """
         if kwargs.get('collect', False):
             templates = get_all_templates(templates)
@@ -66,75 +61,58 @@ class Question:
         with open(self.path, 'r', encoding='utf-8') as file:
             self.raw = file.read().strip()
 
-        return self
-
     def randomize(self) -> str:
         """ Randomize the Variables.
 
-        Uses the modifiers generators to randomize the variables of the question.
-
         Returns:
-            The question text with the randomized variables.
+            [str] The text with the variables value.
         """
-        if not self.mods:
+        if not self.variables:
             raise Warning('Modifiers are not defined.')
 
-        values = [self.mods[v] for v in self.order]
+        values = [self.variables[v] for v in self.order]
         for key, val in zip(self.order, values):
-            self.vars[key] = val['generator'].generate(**self.vars)
-            self.fmt_vars[key] = val['generator'].formatter(self.vars[key])
+            self.values[key] = val['generator'].generate(**self.values)
+            self.values_formatted[key] = val['generator'].formatter(self.values[key])
 
-        return self.raw.format(**self.fmt_vars)
+        return self.text.format(**self.values_formatted)
 
     def answer(self) -> str:
-        if self.raw and self.vars:
-            expr = self.func
-            return evaluate(expr.format(**self.vars))
+        """ Given the Function and the Variables Values Returns the Answer.
+
+        Returns:
+            [str] The Formatted Answer.
+        """
+        if self.raw and self.values:
+            expr = self.function
+            return str(evaluate(expr.format(**self.values)))
 
         return ''
 
-    def _get_args_and_variables(self) -> None:
-        """ [PRIVATE] Set the String Format Args to a Dictionary.
+    def _set_variables(self) -> None:
+        """ Get and Set the Variables and the Clean Text. """
+        text, variables = get_clean_text_and_variables(self.raw)
+        self.text = text
+        self.variables = variables
 
-        Scrape all the variables and it's modifiers of the question text.
-
-        Returns:
-            None
-        """
-        if not self._raw:
+    def _set_metadata(self, text: str) -> None:
+        """ Get and Set the Metadata Information. """
+        if not text:
             return
 
-        global_args, global_fmts, func = get_metadata(metadata=self.meta)
-        self.func = func
-        self.mods.update(global_args)
+        variables, modifiers, function = get_metadata(text)
+        self.function = function
+        self.variables.update(variables)
 
-        args = [fn for _, fn, _, _ in Formatter().parse(self._raw) if fn is not None]
-        for arg in args:
-            values = arg.split('|')
-            if len(values) == 1 and not values[0]:
-                self._raw = self._raw.replace('{' + values[0] + '}', '')
-                continue
+        for var in self.variables.keys():
+            for key, value in modifiers.items():
+                if key not in self.variables[var]['modifiers'].keys():
+                    self.variables[var]['modifiers'][key] = value
 
-            if values[0] not in self.mods.keys():
-                self.mods[values[0]] = {'modifiers': {}}
-
-            self.mods[values[0]]['modifiers'].update(global_fmts)
-
-            if len(values) > 1:
-                self._raw = self._raw.replace(arg, values[0])
-                mods = [i.split('=') for i in values[1].split(';')]
-                mods_to_dict = {mod[0].strip(): mod[1] for mod in mods}
-                if self.mods[values[0]].get('modifiers', None):
-                    self.mods[values[0]]['modifiers'].update(mods_to_dict)
-
-                else:
-                    self.mods[values[0]]['modifiers'] = mods_to_dict
-
-            self.mods[values[0]]['generator'] = modifier_parse(**self.mods[values[0]]['modifiers'])
-
-        order_dict = {key: values['modifiers'] for key, values in self.mods.items()}
+    def _set_order(self) -> None:
+        """ Get and Set the Variables Definition Order. """
+        order_dict = {key: values['modifiers'] for key, values in self.variables.items()}
         self.order = get_order_queue(order_dict)
-        self.randomize()
 
     def __copy__(self):
         new = type(self)()
@@ -142,7 +120,18 @@ class Question:
         return new
 
     def __repr__(self):
-        if self.raw and self.vars:
-            return self.raw.format(**self.fmt_vars)
+        if self.raw and self.values:
+            return self.text.format(**self.values_formatted)
 
         return None
+
+
+if __name__ == '__main__':
+    x = Question()
+    x.raw = """
+    decimals=0\nf={x}+{v}*{t0}
+    ---
+    Velocidade {v|min=t0;max=20} e Posição {x|min=0;max=v+20}. Tempo {t0|max=5}
+    """
+    print(x)
+    print(x.answer())

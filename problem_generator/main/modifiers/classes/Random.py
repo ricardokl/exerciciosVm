@@ -39,11 +39,11 @@ class RandomValue(Modifier):
         super(RandomValue, self).__init__(**kwargs)
 
     def generate(self, **kwargs) -> str:
-        min_ = self.parse(self.args.get('min', self.MIN_DEFAULT), **kwargs)
-        max_ = self.parse(self.args.get('max', self.MAX_DEFAULT), **kwargs)
-        step = self.parse(self.args.get('step', self.STEP_DEFAULT), **kwargs)
-        multi = self.parse(self.args.get('multi', self.MULTI_DEFAULT), **kwargs)
-        div = self.parse(self.args.get('div', self.DIV_DEFAULT), **kwargs)
+        min_ = self.parser(self.args.get('min', self.MIN_DEFAULT), **kwargs)
+        max_ = self.parser(self.args.get('max', self.MAX_DEFAULT), **kwargs)
+        step = self.parser(self.args.get('step', self.STEP_DEFAULT), **kwargs)
+        multi = self.parser(self.args.get('multi', self.MULTI_DEFAULT), **kwargs)
+        div = self.parser(self.args.get('div', self.DIV_DEFAULT), **kwargs)
         if div == 0:
             div = 1
 
@@ -51,7 +51,7 @@ class RandomValue(Modifier):
 
     def formatter(self, value, **kwargs) -> str:
         comma = self.fmt_args.get('comma', self.COMMA_DEFAULT)
-        decimals = self.parse(self.fmt_args.get('decimals', self.DECIMALS_DEFAULT), **kwargs)
+        decimals = self.parser(self.fmt_args.get('decimals', self.DECIMALS_DEFAULT), **kwargs)
         if decimals == 0:
             value = str(int(value))
         else:
