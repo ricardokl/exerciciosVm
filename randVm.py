@@ -1,25 +1,23 @@
 import random
 import datetime
 from pathlib import Path
-from dataclasses import dataclass
 
-# path = Path(__file__)
 
-# @dataclass(slots=True)
 class mru:
-    def __init__(self, vmax: int = 100, xmax: int = 500, dtmax: int = 6):
+    def __init__(self, vmax: int = 100, xmax: int = 500, dtmax: int = 6) -> None:
         """
         Inicialisa um exercício, gerando um texto e os valores a serem
         substituidos
         """
         templates = [x for x in Path(__file__).parent.joinpath("templates").iterdir()]
-        self.texto = random.choice(templates).read_text()
+        self.texto: str = random.choice(templates).read_text()
         # Velocidade aleatória
-        self.v = random.randint(-vmax, vmax)
+        self.v: int = random.randint(-vmax, vmax)
         # Gerando o intervalo de tempo do movimento
-        self.dt = random.randint(1,dtmax*4)/4
+        self.dt: float = random.randint(1,dtmax*4)/4
         # Inicializando as listas de tempo e posição
-        self.t, self.x = list(), list()
+        self.t: list[float] = list()
+        self.x: list[float] = list()
         # Primeiro valor do tempo gerado randomicamente
         self.t.append(random.randint(0,18*4)/4)
         # Segundo valor do tempo dado pelo primeiro mais o intervalo
@@ -28,7 +26,7 @@ class mru:
         self.x.append(random.randint(-xmax*4, xmax*4)/4)
         # Posição final dada pela equação
         self.x.append(self.v*self.dt + self.x[0])
-        self.dx = self.x[1]-self.x[0]
+        self.dx: float = self.x[1]-self.x[0]
 
     def rand(self, vmax: int = 100, xmax: int = 500, dtmax: int = 6) -> None:
         """
