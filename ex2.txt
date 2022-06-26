@@ -1,0 +1,2 @@
+Um objeto de massa {m0} é arrmessado de uma altura inicial de {y0} com uma
+velocidade de {v0}. Determine sua velocidade quando ele chega no chão.

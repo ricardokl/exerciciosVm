@@ -1,0 +1,2 @@
+Um obj de massa {m0} é arrmessado de uma altura inicial de {y0}, atingindo o
+chão com um velocidade de {v1}. Determine a velocidade inicial so objeto.
